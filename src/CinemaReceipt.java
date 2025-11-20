@@ -50,7 +50,7 @@ public class CinemaReceipt {
         System.out.println("  Payment Status   : PAID ✓                     ");
         System.out.println("                                                  ");
         System.out.println("════════════════════════════════════════════════");
-        System.out.println("         IMPORTANT INFORMATION                   ");
+        System.out.println("         IMPORTANT INFORMATIONS                  ");
         System.out.println("════════════════════════════════════════════════");
         System.out.println("  • Please arrive 15 minutes before showtime     ");
         System.out.println("  • Ticket cannot be refunded or exchanged       ");

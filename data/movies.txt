@@ -1,0 +1,10 @@
+1|Avengers: Endgame|Action|181|8.4|60000
+2|Interstellar|Sci-Fi|169|8.6|65000
+3|The Lion King|Animation|118|8.5|45000
+4|Joker|Drama|122|8.3|55000
+5|Frozen II|Animation|103|7.2|40000
+6|Dune Part Two|Sci-Fi|166|8.8|70000
+7|Spider-Man: No Way Home|Action|148|8.5|58000
+8|Inside Out 2|Animation|100|8.1|42000
+9|Oppenheimer|Biography|180|8.9|75000
+10|John Wick 4|Action|169|8.2|52000

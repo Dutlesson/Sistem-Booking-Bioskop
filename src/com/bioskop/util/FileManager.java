@@ -64,6 +64,29 @@ public class FileManager {
     }
 
     /**
+     * Menulis file dan mengembalikan status berhasil / gagal.
+     */
+    public static boolean writeLines(String filename, List<String> content) {
+        String filepath = DATA_FOLDER + filename;
+
+        try {
+            File file = new File(filepath);
+            file.getParentFile().mkdirs();
+
+            Files.write(Paths.get(filepath), content,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
+            return true;
+
+        } catch (IOException e) {
+            System.err.println("Error writing file " + filename + ": " + e.getMessage());
+            return false;
+        }
+    }
+
+
+
+    /**
      * Menambahkan satu baris ke akhir file
      *
      * @param filename nama file tujuan
@@ -183,6 +206,16 @@ public class FileManager {
         }
 
         return maxId + 1;
+    }
+
+    public static Set<String> readHolidayList() {
+        List<String> lines = readFile("holidays.txt");
+        Set<String> set = new HashSet<>();
+        for (String line : lines) {
+            String d = line.trim();
+            if (!d.isEmpty()) set.add(d);
+        }
+        return set;
     }
 
     /**

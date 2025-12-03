@@ -1,6 +1,7 @@
 package com.bioskop.main;
 
 import com.bioskop.model.User;
+import com.bioskop.model.Schedule;
 import com.bioskop.util.FileManager;
 
 import java.util.Scanner;

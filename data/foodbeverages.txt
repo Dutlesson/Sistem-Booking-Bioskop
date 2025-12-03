@@ -1,0 +1,6 @@
+
+1|Popcorn Caramel|35000
+2|Soft Drink|15000
+3|Hot Dog|30000
+4|Nachos|28000
+5|Mineral Water|10000

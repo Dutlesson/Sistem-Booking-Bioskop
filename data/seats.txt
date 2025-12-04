@@ -4,7 +4,7 @@ seatId|scheduleId|seatNumber|isBooked
 3|1|A3|true
 4|1|A4|true
 5|1|A5|false
-6|1|B1|false
+6|1|B1|true
 7|1|B2|true
 8|1|B3|true
 9|1|B4|true

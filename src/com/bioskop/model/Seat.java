@@ -303,6 +303,35 @@ public class Seat {
         return null;
     }
 
+    public static List<Seat> getSeatsBySchedule(int scheduleId) {
+        List<Seat> seats = new ArrayList<>();
+        List<String> lines = FileManager.readFile("seats.txt");
+
+        for (String line : lines) {
+            if (line.trim().isEmpty()) continue;
+
+            String[] parts = line.split("\\|");
+            if (parts.length >= 4) {
+                try {
+                    int seatId = Integer.parseInt(parts[0]);
+                    int sId = Integer.parseInt(parts[1]);
+                    String seatNumber = parts[2];
+                    boolean isBooked = Boolean.parseBoolean(parts[3]);
+
+                    if (sId == scheduleId) {
+                        seats.add(new Seat(seatId, sId, seatNumber, isBooked));
+                    }
+                } catch (NumberFormatException e) {
+                    // Skip invalid lines
+                }
+            }
+        }
+
+        return seats;
+    }
+
+
+
     // ========== GETTERS ==========
 
     public int getSeatId() {

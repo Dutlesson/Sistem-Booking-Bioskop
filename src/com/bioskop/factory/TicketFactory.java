@@ -12,16 +12,6 @@ import java.util.*;
  * @version 1.0
  */
 public class TicketFactory {
-
-    /**
-     * Factory Method - Membuat objek Ticket berdasarkan type
-     *
-     * @param type tipe tiket ("Regular", "VIP", "Student")
-     * @param seatNumber nomor kursi
-     * @param basePrice harga dasar
-     * @return Ticket object (RegularTicket/VIPTicket/StudentTicket)
-     * @throws IllegalArgumentException jika type tidak valid
-     */
     public static Ticket createTicket(String type, String seatNumber, double basePrice) {
         if (type == null || type.trim().isEmpty()) {
             throw new IllegalArgumentException("Ticket type cannot be null or empty");

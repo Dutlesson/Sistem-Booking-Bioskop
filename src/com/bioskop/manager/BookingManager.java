@@ -127,31 +127,4 @@ public class BookingManager {
     public int getGlobalObserverCount() {
         return globalObservers.size();
     }
-
-    // ========== TEST METHOD ==========
-
-    public static void main(String[] args) {
-        System.out.println("╔════════════════════════════════════════╗");
-        System.out.println("║   TESTING BOOKINGMANAGER CLASS         ║");
-        System.out.println("╚════════════════════════════════════════╝\n");
-
-        // Create BookingManager
-        BookingManager manager = new BookingManager();
-
-        // Register global observer
-        System.out.println("=== Test 1: Register Global Observer ===");
-        BookingObserver observer = new BookingObserver("Manager-Observer", 999);
-        manager.registerGlobalObserver(observer);
-        System.out.println("Global observers: " + manager.getGlobalObserverCount() + "\n");
-
-        // Display available seats
-        System.out.println("=== Test 2: Display Available Seats ===");
-        manager.displayAvailableSeats(1);
-
-        // Display statistics
-        System.out.println("\n=== Test 3: Statistics ===");
-        manager.displayStatistics();
-
-        System.out.println("\n✅ All tests completed!");
-    }
 }

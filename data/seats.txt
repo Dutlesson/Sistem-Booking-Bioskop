@@ -10,10 +10,10 @@ seatId|scheduleId|seatNumber|isBooked
 9|1|B4|true
 10|1|B5|false
 11|1|C1|false
-12|1|C2|false
+12|1|C2|true
 13|1|C3|false
 14|1|C4|false
-15|1|C5|false
+15|1|C5|true
 16|2|A1|false
 17|2|A2|false
 18|2|A3|false
@@ -21,7 +21,7 @@ seatId|scheduleId|seatNumber|isBooked
 20|2|A5|false
 21|2|B1|false
 22|2|B2|false
-23|2|B3|false
+23|2|B3|true
 24|2|B4|false
 25|2|B5|false
 25|2|B5|false

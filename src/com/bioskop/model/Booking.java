@@ -92,6 +92,7 @@ public class Booking {
      * @param seatNumber nomor kursi
      * @param basePrice harga dasar
      */
+    //ini ada di file
     public void addTicket(String type, String seatNumber, double basePrice) {
         try {
             // Menggunakan Factory untuk create ticket

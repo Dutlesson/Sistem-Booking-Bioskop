@@ -176,48 +176,4 @@ public class BookingObserver implements SeatObserver {
 
         System.out.println("\n✓ Total logs: " + (logs.size() - 1));
     }
-
-    // ========== TEST METHOD ==========
-
-    public static void main(String[] args) {
-        System.out.println("╔════════════════════════════════════════╗");
-        System.out.println("║   TESTING BOOKINGOBSERVER CLASS        ║");
-        System.out.println("╚════════════════════════════════════════╝\n");
-
-        clearLogs();
-
-        System.out.println("=== Test 1: Create BookingObserver ===");
-        BookingObserver observer1 = new BookingObserver("TestObserver-1", 101);
-        System.out.println("Observer created: " + observer1.getObserverName());
-        System.out.println("User ID: " + observer1.getUserId() + "\n");
-
-        System.out.println("=== Test 2: Simulate Booking ===");
-        observer1.update("A1", true, 1);
-        System.out.println();
-
-        System.out.println("=== Test 3: Simulate Release ===");
-        observer1.update("A1", false, 1);
-        System.out.println();
-
-        System.out.println("=== Test 4: Multiple Observers ===");
-        BookingObserver observer2 = new BookingObserver("TestObserver-2", 102);
-        observer1.update("B3", true, 1);
-        observer2.update("B4", true, 1);
-        System.out.println();
-
-        System.out.println("=== Test 5: Disable Logging ===");
-        observer1.disableLogging();
-        observer1.update("C1", true, 2);
-        System.out.println("(Should not log to file)\n");
-
-        System.out.println("=== Test 6: Print All Logs ===");
-        printLogs();
-        System.out.println();
-
-        System.out.println("=== Test 7: Filter Logs by Schedule ===");
-        java.util.List<String> schedule1Logs = getLogsBySchedule(1);
-        System.out.println("Logs for Schedule 1: " + (schedule1Logs.size() - 1) + " entries\n");
-
-        System.out.println("✅ All tests completed!");
-    }
 }

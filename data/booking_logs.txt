@@ -1,1 +1,0 @@
-timestamp|observerName|userId|seatNumber|action|scheduleId

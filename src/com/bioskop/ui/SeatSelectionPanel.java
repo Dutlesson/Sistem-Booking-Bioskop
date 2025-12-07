@@ -26,6 +26,10 @@ public class SeatSelectionPanel extends JPanel {
         this.seatButtons = new HashMap<>();
 
         initializeUI();
+
+        // 🔥 FIX UTAMA: load seat dari seat.txt
+        List<Seat> seats = Seat.getSeatsBySchedule(scheduleId);
+        markBookedSeats(seats);
     }
 
     private void initializeUI() {
@@ -33,20 +37,17 @@ public class SeatSelectionPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setBackground(Color.WHITE);
 
-        // Title
         JLabel titleLabel = new JLabel("Pilih Kursi Anda", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         add(titleLabel, BorderLayout.NORTH);
 
-        // Seat Grid Panel
         JPanel seatGridPanel = createSeatGridPanel();
         JScrollPane scrollPane = new JScrollPane(seatGridPanel);
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Legend and Info Panel
         JPanel bottomPanel = createBottomPanel();
         add(bottomPanel, BorderLayout.SOUTH);
     }
@@ -57,7 +58,6 @@ public class SeatSelectionPanel extends JPanel {
         gridPanel.setBackground(Color.WHITE);
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // Screen indicator
         JPanel screenPanel = new JPanel();
         screenPanel.setBackground(new Color(50, 50, 50));
         screenPanel.setPreferredSize(new Dimension(700, 40));
@@ -74,38 +74,32 @@ public class SeatSelectionPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gridPanel.add(screenPanel, gbc);
 
-        // Generate seats (8 baris, 10 kolom)
         char[] rows = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
         int columns = 10;
 
         for (int i = 0; i < rows.length; i++) {
-            // Row label (kiri)
+
             JLabel rowLabelLeft = new JLabel(String.valueOf(rows[i]));
             rowLabelLeft.setFont(new Font("Arial", Font.BOLD, 18));
             rowLabelLeft.setForeground(new Color(100, 100, 100));
             gbc.gridx = 0;
             gbc.gridy = i + 1;
-            gbc.gridwidth = 1;
             gbc.insets = new Insets(5, 10, 5, 15);
-            gbc.fill = GridBagConstraints.NONE;
             gridPanel.add(rowLabelLeft, gbc);
 
-            // Seats
             for (int j = 1; j <= columns; j++) {
                 String seatNumber = rows[i] + String.valueOf(j);
                 JButton seatButton = createSeatButton(seatNumber);
 
                 gbc.gridx = j;
                 gbc.gridy = i + 1;
-                gbc.gridwidth = 1;
                 gbc.insets = new Insets(SEAT_SPACING/2, SEAT_SPACING/2,
                         SEAT_SPACING/2, SEAT_SPACING/2);
-                gridPanel.add(seatButton, gbc);
 
+                gridPanel.add(seatButton, gbc);
                 seatButtons.put(seatNumber, seatButton);
             }
 
-            // Row label (kanan)
             JLabel rowLabelRight = new JLabel(String.valueOf(rows[i]));
             rowLabelRight.setFont(new Font("Arial", Font.BOLD, 18));
             rowLabelRight.setForeground(new Color(100, 100, 100));
@@ -115,7 +109,6 @@ public class SeatSelectionPanel extends JPanel {
             gridPanel.add(rowLabelRight, gbc);
         }
 
-        // Add some padding at bottom
         gbc.gridy = rows.length + 1;
         gbc.weighty = 1.0;
         gridPanel.add(Box.createVerticalGlue(), gbc);
@@ -133,7 +126,6 @@ public class SeatSelectionPanel extends JPanel {
         button.setBorderPainted(false);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Add hover effect
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 if (button.getBackground().equals(AVAILABLE_COLOR)) {
@@ -154,7 +146,6 @@ public class SeatSelectionPanel extends JPanel {
     }
 
     private void toggleSeatSelection(String seatNumber, JButton button) {
-        // Check if seat is already booked
         if (button.getBackground().equals(BOOKED_COLOR)) {
             JOptionPane.showMessageDialog(this,
                     "Kursi " + seatNumber + " sudah dipesan!",
@@ -163,7 +154,6 @@ public class SeatSelectionPanel extends JPanel {
             return;
         }
 
-        // Toggle selection
         if (selectedSeats.contains(seatNumber)) {
             selectedSeats.remove(seatNumber);
             button.setBackground(AVAILABLE_COLOR);
@@ -172,7 +162,6 @@ public class SeatSelectionPanel extends JPanel {
             button.setBackground(SELECTED_COLOR);
         }
 
-        // Update selected count
         updateSelectedCount();
     }
 
@@ -187,7 +176,6 @@ public class SeatSelectionPanel extends JPanel {
         panel.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         panel.setBackground(Color.WHITE);
 
-        // Legend
         JPanel legendPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
         legendPanel.setBackground(Color.WHITE);
         legendPanel.add(createLegendItem("Tersedia", AVAILABLE_COLOR));
@@ -196,7 +184,6 @@ public class SeatSelectionPanel extends JPanel {
 
         panel.add(legendPanel, BorderLayout.WEST);
 
-        // Selected info and button
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 5));
         rightPanel.setBackground(Color.WHITE);
 
@@ -248,7 +235,6 @@ public class SeatSelectionPanel extends JPanel {
             return;
         }
 
-        // Sort seats for better display
         List<String> sortedSeats = new ArrayList<>(selectedSeats);
         Collections.sort(sortedSeats);
         String seatList = String.join(", ", sortedSeats);
@@ -262,7 +248,6 @@ public class SeatSelectionPanel extends JPanel {
                 JOptionPane.QUESTION_MESSAGE);
 
         if (result == JOptionPane.YES_OPTION) {
-            // TODO: Proceed to payment (Commit 20)
             JOptionPane.showMessageDialog(this,
                     "Booking berhasil!\nKursi: " + seatList,
                     "Sukses",
@@ -270,39 +255,30 @@ public class SeatSelectionPanel extends JPanel {
         }
     }
 
-    /**
-     * Load seat status from database
-     * Call this method after creating the panel to mark booked seats
-     */
-    public void loadSeatStatus(List<Seat> bookedSeats) {
-        if (bookedSeats == null) return;
+    // 🔥 Method untuk apply status kursi dari seat.txt
+    private void markBookedSeats(List<Seat> seats) {
+        if (seats == null) return;
 
-        for (Seat seat : bookedSeats) {
+        for (Seat seat : seats) {
             if (seat.isBooked()) {
-                String seatNumber = seat.getSeatNumber();
-                JButton button = seatButtons.get(seatNumber);
-                if (button != null) {
-                    button.setBackground(BOOKED_COLOR);
-                    button.setEnabled(false);
-                    button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                JButton btn = seatButtons.get(seat.getSeatNumber());
+                if (btn != null) {
+                    btn.setBackground(BOOKED_COLOR);
+                    btn.setEnabled(false);
+                    btn.setCursor(Cursor.getDefaultCursor());
                 }
             }
         }
     }
 
-    /**
-     * Get selected seats
-     * @return Set of selected seat numbers
-     */
     public Set<String> getSelectedSeats() {
         return new HashSet<>(selectedSeats);
     }
 
-    /**
-     * Get schedule ID
-     * @return Schedule ID
-     */
     public int getScheduleId() {
         return scheduleId;
+    }
+    public void loadSeatStatus(List<Seat> bookedSeats) {
+        markBookedSeats(bookedSeats);
     }
 }

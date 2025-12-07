@@ -10,7 +10,7 @@ import java.awt.*;
  * Replaces CLI MainApp with modern Swing GUI
  *
  * @author Nazriel (Member 1) - Original CLI
- * @author Fiandra (Member 3) - GUI Implementation
+ * @author Fiandra (Member 3) - GUI Implementation\
  * @version 3.0 GUI
  */
 public class MainGUI {

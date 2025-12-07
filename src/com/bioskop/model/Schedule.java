@@ -24,8 +24,17 @@ public class Schedule {
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
 
-    // List hari libur hard code
-    private static final Set<String> HOLIDAYS = Set.of("2025-01-01", "2025-12-25", "2025-05-01");
+    // -------------------------------
+    // FIX: List hari libur (boleh tambah sendiri)
+    // -------------------------------
+    private static final Set<String> HOLIDAYS = Set.of(
+            "2025-01-01",
+            "2025-03-31",
+            "2025-04-18",
+            "2025-05-01",
+            "2025-05-29",
+            "2025-12-25"
+    );
 
     public Schedule(int scheduleId, int movieId, String studioName,
                     LocalDate showDate, LocalTime showTime,
@@ -38,15 +47,20 @@ public class Schedule {
         this.showTime = showTime;
         this.totalSeats = totalSeats;
         this.availableSeats = availableSeats;
-        // tidak menentukan strategy disini
     }
 
-    // Penentuan strategy berdasarkan data dari file
+    // ---------------------------------------
+    // FIX: Strategy selalu ditentukan dengan benar
+    // ---------------------------------------
     public void determinePricingStrategy() {
-        if (HOLIDAYS.contains(showDate.format(DATE_FMT))) {
+
+        String dateKey = showDate.format(DATE_FMT);
+
+        if (HOLIDAYS.contains(dateKey)) {
             pricingStrategy = new HolidayPricing();
             return;
         }
+
         switch (showDate.getDayOfWeek()) {
             case SATURDAY, SUNDAY -> pricingStrategy = new WeekendPricing();
             default -> pricingStrategy = new WeekdayPricing();
@@ -54,6 +68,7 @@ public class Schedule {
     }
 
     public PricingStrategy getPricingStrategy() {
+        if (pricingStrategy == null) determinePricingStrategy();
         return pricingStrategy;
     }
 
@@ -62,7 +77,9 @@ public class Schedule {
         return pricingStrategy.calculatePrice(basePrice);
     }
 
-    // Load semua schedule dari file (tanpa logic hard-coded)
+    // ----------------------------------------
+    // FIX: Strategy otomatis dihitung saat load
+    // ----------------------------------------
     public static List<Schedule> loadFromFile() {
         List<String> lines = FileManager.readFile(FILE);
         List<Schedule> list = new ArrayList<>();
@@ -80,7 +97,7 @@ public class Schedule {
             int available = Integer.parseInt(p[6]);
 
             Schedule s = new Schedule(sid, mid, studio, date, time, total, available);
-            s.determinePricingStrategy();
+            s.determinePricingStrategy(); // FIX HERE
             list.add(s);
         }
         return list;
@@ -89,7 +106,6 @@ public class Schedule {
     public static List<Schedule> getAllSchedules() {
         return loadFromFile();
     }
-
 
     public static Schedule getScheduleById(int id) {
         return loadFromFile().stream()
@@ -105,28 +121,33 @@ public class Schedule {
         return movieId;
     }
 
+    // Display info with strategy
     public String getInfo() {
+        if (pricingStrategy == null) determinePricingStrategy();
         Movie movie = Movie.getMovieById(this.movieId);
         String movieName = (movie != null) ? movie.getTitle() : "Unknown Movie";
 
         return "Schedule " + scheduleId +
-                " | " + movieName +
-                " | Studio " + studioName +
-                " | " + showDate + " " + showTime +
-                " | Strategy: " + pricingStrategy.getStrategyName();
+                " || " + movieName +
+                " || Studio " + studioName +
+                " || " + showDate + " " + showTime +
+                " || " + getPricingStrategy().getStrategyName();
     }
 
+
+    // ----------------------------------------
+    // Harga final berdasarkan Strategy
+    // ----------------------------------------
     public double calculateFinalPrice() {
-        com.bioskop.model.Movie movie = com.bioskop.model.Movie.getMovieById(this.movieId);
+        Movie movie = Movie.getMovieById(this.movieId);
 
         if (movie == null) {
             System.err.println("ERROR: Movie ID " + movieId + " not found!");
             return 0;
         }
 
-        double basePrice = movie.getBasePrice();  // ambil HARGA film dari movies.txt
-        return calculatePrice(basePrice);         // dihitung pakai Strategy Pattern
+        double basePrice = movie.getBasePrice();  // dari movies.txt
+        return calculatePrice(basePrice);         // Weekday / Weekend / Holiday
     }
-
 
 }

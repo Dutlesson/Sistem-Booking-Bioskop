@@ -1,6 +1,3 @@
-
-1|Popcorn Caramel|35000
-2|Soft Drink|15000
-3|Hot Dog|30000
-4|Nachos|28000
-5|Mineral Water|10000
+Popcorn|25000|Popcorn gurih dan renyah.|popcorn.jpeg
+Coke|15000|Minuman soda dingin menyegarkan.|coke.jpeg
+Nachos|30000|Nachos dengan keju leleh.|nachos.jpeg

@@ -1,3 +1,4 @@
 1|admin|admin123|Administrator|admin
 2|customer1|pass123|John Doe|customer
 3|customer2|pass123|Jane Smith|customer
+4|q|q|amal|customer

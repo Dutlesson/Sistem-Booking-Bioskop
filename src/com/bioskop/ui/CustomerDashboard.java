@@ -86,6 +86,10 @@ public class CustomerDashboard extends JFrame {
         navPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         navPanel.add(createNavButton("📋 My Bookings", e -> showMyBookings()));
         navPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        navPanel.add(createNavButton("🍿 Food & Beverages", e -> showFoodBeverages()));
+        navPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        navPanel.add(createNavButton("🧾 Food Order History", e -> showFoodOrderHistory()));
+        navPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         navPanel.add(createNavButton("ℹ️ About", e -> showAbout()));
 
         // Content Panel
@@ -229,6 +233,20 @@ public class CustomerDashboard extends JFrame {
         contentPanel.removeAll();
         BookingHistoryPanel historyPanel = new BookingHistoryPanel(currentUser);
         contentPanel.add(historyPanel, BorderLayout.CENTER);
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }
+
+    private void showFoodBeverages() {
+        contentPanel.removeAll();
+        contentPanel.add(new FoodBeveragesPanel(), BorderLayout.CENTER);
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }
+
+    private void showFoodOrderHistory() {
+        contentPanel.removeAll();
+        contentPanel.add(new FoodOrderHistoryPanel(), BorderLayout.CENTER);
         contentPanel.revalidate();
         contentPanel.repaint();
     }

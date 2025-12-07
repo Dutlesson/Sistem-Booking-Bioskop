@@ -219,6 +219,40 @@ public class FileManager {
     }
 
     /**
+     * Append a line to a file
+     * @param fileName File name (will be saved in data folder)
+     * @param content Content to append
+     * @return true if successful
+     */
+    public static boolean appendToFile(String fileName, String content) {
+        try {
+            ensureDataFolderExists();
+
+            File file = new File(DATA_FOLDER + fileName);
+
+            // Create file if doesn't exist
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            // Append content with newline
+            java.nio.file.Files.write(
+                    file.toPath(),
+                    (content + System.lineSeparator()).getBytes(),
+                    java.nio.file.StandardOpenOption.APPEND
+            );
+
+            System.out.println("✓ Data appended to: " + file.getPath());
+            return true;
+
+        } catch (Exception e) {
+            System.err.println("✗ Error appending to file: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
      * Cek apakah file exists
      *
      * @param filename nama file
@@ -238,3 +272,4 @@ public class FileManager {
         }
     }
 }
+

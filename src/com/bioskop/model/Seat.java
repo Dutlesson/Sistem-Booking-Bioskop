@@ -305,26 +305,56 @@ public class Seat {
 
     public static List<Seat> getSeatsBySchedule(int scheduleId) {
         List<Seat> seats = new ArrayList<>();
-        List<String> lines = FileManager.readFile("seats.txt");
 
-        for (String line : lines) {
-            if (line.trim().isEmpty()) continue;
+        try {
+            List<String> lines = com.bioskop.util.FileManager.readFile("seats.txt");
 
-            String[] parts = line.split("\\|");
-            if (parts.length >= 4) {
-                try {
-                    int seatId = Integer.parseInt(parts[0]);
-                    int sId = Integer.parseInt(parts[1]);
-                    String seatNumber = parts[2];
-                    boolean isBooked = Boolean.parseBoolean(parts[3]);
+            System.out.println("DEBUG Seat: Reading seats.txt");
+            System.out.println("DEBUG Seat: Total lines in file: " + lines.size());
+            System.out.println("DEBUG Seat: Looking for scheduleId: " + scheduleId);
 
-                    if (sId == scheduleId) {
-                        seats.add(new Seat(seatId, sId, seatNumber, isBooked));
+            // Skip header line if exists
+            boolean isFirstLine = true;
+
+            for (String line : lines) {
+                line = line.trim();
+
+                // Skip empty lines
+                if (line.isEmpty()) continue;
+
+                // Skip header line
+                if (isFirstLine && line.startsWith("seatId")) {
+                    isFirstLine = false;
+                    continue;
+                }
+
+                String[] parts = line.split("\\|");
+
+                if (parts.length >= 4) {
+                    try {
+                        int seatId = Integer.parseInt(parts[0].trim());
+                        int sId = Integer.parseInt(parts[1].trim());
+                        String seatNumber = parts[2].trim();
+                        boolean isBooked = Boolean.parseBoolean(parts[3].trim());
+
+                        // Only add seats for this schedule
+                        if (sId == scheduleId) {
+                            Seat seat = new Seat(seatId, sId, seatNumber, isBooked);
+                            seats.add(seat);
+                            System.out.println("DEBUG Seat: Added " + seatNumber + " (booked: " + isBooked + ")");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.err.println("DEBUG Seat: Error parsing line: " + line);
+                        e.printStackTrace();
                     }
-                } catch (NumberFormatException e) {
-                    // Skip invalid lines
                 }
             }
+
+            System.out.println("DEBUG Seat: Total seats loaded for schedule " + scheduleId + ": " + seats.size());
+
+        } catch (Exception e) {
+            System.err.println("DEBUG Seat: Error loading seats: " + e.getMessage());
+            e.printStackTrace();
         }
 
         return seats;
